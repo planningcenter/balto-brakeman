@@ -13,7 +13,7 @@ class CheckRun
       "Content-Type": "application/json",
       "Accept": "application/vnd.github.antiope-preview+json",
       "Authorization": "Bearer #{token}",
-      "User-Agent": "rubocop-action"
+      "User-Agent": "brakeman-action"
     }.freeze
   end
 

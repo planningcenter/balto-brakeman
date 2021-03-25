@@ -1,5 +1,5 @@
-name: "Balto - Rubocop"
-description: "Run rubocop on your repo"
+name: "Balto - Brakeman"
+description: "Run brakeman on your repo"
 runs:
   using: node12
   main: main.js

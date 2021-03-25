@@ -2,8 +2,7 @@
 
 Balto is Smart and Fast:
 
-* Installs _your_ version of ruby
-* Installs _your_ versions of rubocop and rubocop extension gems
+* Installs _the latest version of brakeman
 * _Only_ runs on files that have changed
 * _Only_ annotates lines that have changed
 
