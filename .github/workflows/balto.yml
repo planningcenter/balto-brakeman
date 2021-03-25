@@ -16,6 +16,6 @@ jobs:
           ruby-version: "${{ steps.rv.outputs.RUBY_VERSION }}"
       - uses: ./
         with:
-          rootDirectory: test
+          rootDirectory: test/app
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
