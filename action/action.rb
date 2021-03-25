@@ -62,8 +62,6 @@ end
 def generate_annotations(compare_sha:)
   annotations = []
 
-  p "repo_path: #{repo_path}"
-
   brakeman_json = Bundler.with_original_env do
     `brakeman --path "#{repo_path}" --quiet --format json`
   end
