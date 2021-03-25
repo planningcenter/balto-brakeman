@@ -11,7 +11,7 @@ if ENV["BALTO_LOCAL_TEST"]
   require_relative "./fake_check_run"
 end
 
-CHECK_NAME = "Brakeman"
+CHECK_NAME = "brakeman"
 
 event = JSON.parse(
   File.read(ENV["GITHUB_EVENT_PATH"]),
@@ -48,7 +48,7 @@ def working_dir
 end
 
 def repo_path
-  @repo_path ||= ENV["BALTO_LOCAL_TEST"] ? "test/app" : git_root
+  @repo_path ||= ENV["BALTO_LOCAL_TEST"] || ENV["GITHUB_TEST"] ? "test/app" : git_root
 end
 
 def file_fullpath(relative_path)
@@ -62,6 +62,8 @@ end
 def generate_annotations(compare_sha:)
   annotations = []
 
+  p "repo_path: #{repo_path}"
+
   brakeman_json = Bundler.with_original_env do
     `brakeman --path "#{repo_path}" --quiet --format json`
   end
@@ -71,14 +73,15 @@ def generate_annotations(compare_sha:)
   brakeman_output.warnings.each do |warning|
     path = file_fullpath(warning.file)
 
-    change_ranges = GitUtils.generate_change_ranges(path, compare_sha: compare_sha)
+    # change_ranges = GitUtils.generate_change_ranges(path, compare_sha: compare_sha)
 
     # return unless change_ranges.any? { |range| range.include?(warning.line) }
 
     annotations.push(
       path: path,
       start_line: warning.line,
-      annotation_level: BRAKEMAN_TO_GITHUB_SEVERITY[warning.warning_type],
+      end_line: warning.line,
+      annotation_level: BRAKEMAN_TO_GITHUB_SEVERITY[warning.confidence],
       message: warning.message
     )
   end
@@ -92,6 +95,7 @@ begin
                  else
                    event.pull_request.base.sha
                  end
+
   annotations = generate_annotations(compare_sha: previous_sha)
 rescue Exception => e
   puts e.message
