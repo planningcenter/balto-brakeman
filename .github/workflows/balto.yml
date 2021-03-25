@@ -10,11 +10,11 @@ jobs:
       - name: Checkout Locally
         uses: actions/checkout@v2
       - name: Read ruby version
-        run: echo ::set-output name=RUBY_VERSION::$(cat /.ruby-version | cut -f 1,2 -d .)
+        run: echo ::set-output name=RUBY_VERSION::$(cat .ruby-version | cut -f 1,2 -d .)
         id: rv
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2
+          ruby-version: "${{ steps.rv.outputs.RUBY_VERSION }}"
       - uses: ./
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
