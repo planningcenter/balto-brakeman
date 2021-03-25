@@ -1,13 +1,13 @@
 {
   "pull_request": {
     "base": {
-      "sha": "22b00741ec61ff185b06449115a9a448d4db00e9"
+      "sha": "b2d2da7dae1313986ad48b937644d3c262b5d657"
     }
   },
   "repository": {
     "owner": {
       "login": "planningcenter"
     },
-    "name": "balto-rubocop"
+    "name": "balto-brakeman"
   }
 }

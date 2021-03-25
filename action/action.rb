@@ -33,12 +33,10 @@ if !check_run_create.ok?
   raise "Couldn't create check run #{check_run_create.inspect}"
 end
 
-RUBOCOP_TO_GITHUB_SEVERITY = {
-  "refactor" => "failure",
-  "convention" => "failure",
-  "warning" => "warning",
-  "error" => "failure",
-  "fatal" => "failure"
+BRAKEMAN_TO_GITHUB_SEVERITY = {
+  "High" => "failure",
+  "Medium" => "failure",
+  "Weak" => "warning",
 }.freeze
 
 def git_root
@@ -60,28 +58,25 @@ end
 def generate_annotations(compare_sha:)
   annotations = []
 
-  rubocop_json = Bundler.with_original_env do
-    `git diff --name-only #{compare_sha} --diff-filter AM --relative | xargs rubocop --force-exclusion --format json`
+  brakeman_json = Bundler.with_original_env do
+    `brakeman --path "#{ENV["BALTO_LOCAL_TEST_REPO"]}" --quiet --format json`
   end
 
-  rubocop_output = JSON.parse(rubocop_json, object_class: OpenStruct)
+  brakeman_output = JSON.parse(brakeman_json, object_class: OpenStruct)
 
-  rubocop_output.files.each do |file|
-    path = file_fullpath(file.path)
+  brakeman_output.warnings.each do |warning|
+    path = file_fullpath(warning.file)
 
     change_ranges = GitUtils.generate_change_ranges(path, compare_sha: compare_sha)
 
-    file.offenses.each do |offense|
-      next unless change_ranges.any? { |range| range.include?(offense.location.start_line) }
+    # return unless change_ranges.any? { |range| range.include?(warning.line) }
 
-      annotations.push(
-        path: path,
-        start_line: offense.location.start_line,
-        end_line: offense.location.last_line,
-        annotation_level: RUBOCOP_TO_GITHUB_SEVERITY[offense.severity],
-        message: offense.message
-      )
-    end
+    annotations.push(
+      path: path,
+      start_line: warning.line,
+      annotation_level: BRAKEMAN_TO_GITHUB_SEVERITY[warning.warning_type],
+      message: warning.message
+    )
   end
 
   annotations
