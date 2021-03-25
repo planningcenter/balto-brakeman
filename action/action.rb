@@ -47,6 +47,10 @@ def working_dir
   @working_dir ||= Pathname.new(Dir.getwd)
 end
 
+def repo_path
+  @repo_path ||= ENV["BALTO_LOCAL_TEST"] ? "test/app" : git_root
+end
+
 def file_fullpath(relative_path)
   if git_root != working_dir
     File.join(working_dir.relative_path_from(git_root), relative_path)
@@ -59,7 +63,7 @@ def generate_annotations(compare_sha:)
   annotations = []
 
   brakeman_json = Bundler.with_original_env do
-    `brakeman --path "#{ENV["BALTO_LOCAL_TEST_REPO"]}" --quiet --format json`
+    `brakeman --path "#{repo_path}" --quiet --format json`
   end
 
   brakeman_output = JSON.parse(brakeman_json, object_class: OpenStruct)
