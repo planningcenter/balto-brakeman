@@ -1,0 +1,17 @@
+name: "Balto - Rubocop"
+description: "Run rubocop on your repo"
+runs:
+  using: node12
+  main: main.js
+branding:
+  icon: life-buoy
+  color: orange
+inputs:
+  rootDirectory:
+    description: The root directory to use for running the action
+    required: false
+    default: "."
+  conclusionLevel:
+    description: Which check run conclusion type to use when annotations are created ("neutral" or "failure" are most common)
+    required: false
+    default: "neutral"
