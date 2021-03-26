@@ -2,7 +2,7 @@
 
 Balto is Smart and Fast:
 
-* Installs _the latest version of brakeman
+* Installs the latest version of brakeman
 * _Only_ runs on files that have changed
 * _Only_ annotates lines that have changed
 
@@ -19,6 +19,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Read ruby version
         run: echo ::set-output name=RUBY_VERSION::$(cat .ruby-version | cut -f 1,2 -d .)
         id: rv

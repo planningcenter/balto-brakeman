@@ -71,9 +71,9 @@ def generate_annotations(compare_sha:)
   brakeman_output.warnings.each do |warning|
     path = file_fullpath(warning.file)
 
-    # change_ranges = GitUtils.generate_change_ranges(path, compare_sha: compare_sha)
+    change_ranges = GitUtils.generate_change_ranges(path, compare_sha: compare_sha)
 
-    # return unless change_ranges.any? { |range| range.include?(warning.line) }
+    next unless change_ranges.any? { |range| range.include?(warning.line) }
 
     annotations.push(
       path: path,

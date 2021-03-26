@@ -1,14 +1,15 @@
 name: Balto
 
-on: [pull_request, push]
+on: [pull_request]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Locally
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Read ruby version
         run: echo ::set-output name=RUBY_VERSION::$(cat .ruby-version | cut -f 1,2 -d .)
         id: rv
