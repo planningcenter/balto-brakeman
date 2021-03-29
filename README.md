@@ -1,10 +1,11 @@
 # 🐺 Balto
 
-Balto is Smart and Fast:
+Balto is Smart:
 
 * Installs the latest version of brakeman
-* _Only_ runs on files that have changed
 * _Only_ annotates lines that have changed
+
+While Balto will only annotate changed lines of code, Brakeman scans the entire Rails app.
 
 Sample config (place in `.github/workflows/balto.yml`):
 
@@ -21,13 +22,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Read ruby version
-        run: echo ::set-output name=RUBY_VERSION::$(cat .ruby-version | cut -f 1,2 -d .)
-        id: rv
       - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "${{ steps.rv.outputs.RUBY_VERSION }}"
-      - uses: planningcenter/balto-brakeman@v0.1
+      - uses: planningcenter/balto-brakeman@v0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
