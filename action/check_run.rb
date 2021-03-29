@@ -41,7 +41,7 @@ class CheckRun
 
     output = {
       title: name,
-      summary: "#{annotations.length} offense(s) found",
+      summary: "#{annotations.length} warning(s) found",
       annotations: annotations
     }
 
