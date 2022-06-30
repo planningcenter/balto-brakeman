@@ -6,6 +6,7 @@ class GemfileStrategy
       source "https://rubygems.org"
 
       gem 'brakeman'
+      gem 'ostruct'
     end
   end
 end
