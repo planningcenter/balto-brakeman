@@ -23,8 +23,6 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
       - uses: planningcenter/balto-brakeman@v0.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
