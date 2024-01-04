@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ruby/setup-ruby@v1
-      - uses: planningcenter/balto-brakeman@v0.5
+      - uses: planningcenter/balto-brakeman@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
